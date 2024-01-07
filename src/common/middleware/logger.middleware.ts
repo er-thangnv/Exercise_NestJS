@@ -3,12 +3,11 @@ import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  private logger = new Logger('HTTP');
   use(req: Request, res: Response, next: NextFunction) {
-    console.log(`req:`, {
-      headers: req.headers,
-      body: req.body,
-      originalUrl: req.originalUrl,
+    const start = Date.now();
+    res.on('finish', () => {
+      const duration = Date.now() - start;
+      console.log(`Request to ${req.originalUrl} completed in ${duration}ms`);
     });
     next();
   }

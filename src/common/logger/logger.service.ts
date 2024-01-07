@@ -2,28 +2,23 @@ import { Injectable, Logger, Scope } from '@nestjs/common';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class LoggerService extends Logger {
-  error(message: any, trace?: string, context?: string) {
-    // TO DO
-    super.error(message, trace, context);
+  logRequest(request: any, id: any, message: any) {
+    const { method, url, headers, body } = request;
+    const timestamp = new Date().toISOString();
+    const level = 'INFO';
+
+    const logger = `${timestamp}\t ${message}\t ${id}\t ${method}\t ${url}\t headers=${JSON.stringify(headers)}\t body=${JSON.stringify(body)}`;
+    super.log(logger, level);
   }
 
-  warn(message: any, context?: string) {
-    // TO DO
-    super.warn(message, context);
+  logResponse(response: any, request: any, id: any, message: any, status: any) {
+    const { method, url, headers, body } = request;
+    const timestamp = new Date().toISOString();
+    const level = 'INFO';
+    const userId = '2341e245-d616-431f-b269-095d0ece2cfa';
+
+    const logger = `${timestamp}\t ${message}\t ${id}\t ${method}\t ${url}\t ${userId}\t ${status}\t headers=${JSON.stringify(headers)}\t body=${JSON.stringify(body)}`;
+    super.log(logger, level);
   }
 
-  log(message: any, context?: string) {
-    // TO DO
-    super.log(message, context);
-  }
-
-  debug(message: any, context?: string) {
-    // TO DO
-    super.debug(message, context);
-  }
-
-  verbose(message: any, context?: string) {
-    // TO DO
-    super.verbose(message, context);
-  }
 }
